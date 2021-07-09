@@ -1,0 +1,53 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block image %}
+<header class="masthead" style="background-image: url('{% static "blog/img/home-bg.jpg" %}')">
+{% endblock %}
+{% block header %}
+<h1>Clean Blog</h1>
+<span class="subheading">A Blog Theme by Start Bootstrap</span>
+{% endblock %}
+{% block main %}
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-preview">
+          <h3 class="alert alert-primary">
+              category: {{category.title}}
+          </h3>
+          {% for article in object_list %}
+          <a href="{% url 'blog:detail' slug=article.slug %}">
+            <h2 class="post-title">
+              {{article.title}}
+              {% if article.is_special %}
+                <span class="badge badge-danger" style="font-size: 14px;">SPECIAL</span>
+              {% endif %}
+            </h2>
+            <h3 class="post-subtitle">
+              {{article.body|striptags|truncatewords:50}}
+            </h3>
+          </a>
+          <p class="post-meta">Posted by
+          <a href="{% url 'blog:author' article.author %}">{{article.author.username}}</a>
+          on {{article.time}}</p>
+            {% for cat in article.category.active %}
+              <small><a href="{% url 'blog:category' slug=cat.slug %}">#{{cat.title}}</a></small>
+            {% endfor %}
+          {% endfor %}
+        </div>
+        <hr>
+        <!-- Pager -->
+        <div class="clearfix">
+          {% if page_obj.has_previous %}
+          <a class="btn btn-primary float-right ml-3" href="{% url 'blog:category' category.slug page_obj.previous_page_number %}">News Posts &rarr;</a>
+          {% endif %}
+          {% if page_obj.has_next %}
+          <a class="btn btn-primary float-left" href="{% url 'blog:category' category.slug page_obj.next_page_number %}">Older Posts &larr;</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

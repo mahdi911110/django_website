@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %}{{object.title}}{% endblock %}
+{% block image %}
+<header class="masthead" style="background-image: url('{{object.image.url}}')">
+{% endblock %}
+{% block header %}
+<h1>{{object.header}}</h1>
+<span class="subheading">{{object.span}}</span>
+{% endblock %}
+{% block main %}
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          {% if object.is_special %}
+            {% if user.is_authenticated and user.is_special_user or user == object.author or user.is_superuser %}
+              <h1>{{object.title}}</h1>
+              <p>{{object.body|safe}}</p>
+              <p>{{object.time}}</p>
+              <p>{{object.author.username}}</p>
+            {% else %}
+              <h1>{{object.title}}</h1>
+              <p>{{object.body|safe|truncatewords:30}}</p>
+              <br>
+              <p class="alert alert-warning">this article is special. you must have <a class="alert-link" href="#">special account</a> for it</p>
+            {% endif %}  
+          {% else %}
+          <h1>{{object.title}}</h1>
+          <p>{{object.body|safe}}</p>
+          <p>{{object.time}}</p>
+          <p>{{object.author.username}}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </article>
+{% endblock %}
