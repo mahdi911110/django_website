@@ -1,0 +1,6 @@
+1.install virtualenv library for python
+2.create virtualenv
+3.active virtualenv
+4.install requierment.txt
+5.create super user
+6.runserver
